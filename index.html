@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>TikTok - Mua Coin</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f1f1f2;
+            color: #161823;
+            line-height: 1.5;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e1e1e2;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #161823;
+            font-weight: 700;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            color: #161823;
+        }
+
+        .logo-text {
+            font-weight: 700;
+        }
+
+        /* Search Container */
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 24px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 46px;
+            padding: 12px 50px 12px 16px;
+            border: 1px solid #e1e1e2;
+            border-radius: 92px;
+            background-color: rgba(22, 24, 35, 0.06);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #fe2c55;
+            background-color: #ffffff;
+        }
+
+        .search-input::placeholder {
+            color: rgba(22, 24, 35, 0.5);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(22, 24, 35, 0.34);
+            padding: 8px;
+            border-radius: 50%;
+            transition: color 0.2s ease;
+        }
+
+        .search-button:hover {
+            color: #161823;
+        }
+
+        /* Header Actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .login-button {
+            background-color: #fe2c55;
+            color: #ffffff;
+            border: none;
+            padding: 8px 28px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            min-height: 36px;
+        }
+
+        .login-button:hover {
+            background-color: #e91e63;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #161823;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background-color: rgba(22, 24, 35, 0.06);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px 0;
+            min-height: calc(100vh - 60px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Coin Packages Grid */
+        .coin-packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .coin-package {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e1e1e2;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coin-package:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            border-color: #fe2c55;
+        }
+
+        .coin-package.selected {
+            border-color: #fe2c55;
+            box-shadow: 0 0 0 2px rgba(254, 44, 85, 0.2);
+        }
+
+        .coin-icon {
+            display: flex;
+            justify-content: center;
+        }
+
+        .coin-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1677ff;
+            margin-left: 4px;
+        }
+
+        .coin-price, .coin-subtitle {
+            font-size: 16px;
+            color: rgba(129, 129, 129, 0.75);
+            font-weight: 500;
+        }
+
+        /* Large Package Styling */
+        .large-package {
+            grid-column: span 1;
+        }
+
+        .large-package .coin-amount {
+            font-size: 32px;
+            color: #ff6b35;
+        }
+
+        /* Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background-color: #ffffff;
+            border: 1px solid #e1e1e2;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+            color: #161823;
+        }
+
+        .help-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Custom Amount Modal */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e1e1e2;
+            background-color: #fafafa;
+        }
+
+        .custom-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #161823;
+            flex: 1;
+            text-align: center;
+        }
+
+        .custom-modal-back {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #161823;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .custom-modal-help {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #161823;
+            font-size: 20px;
+        }
+
+        .custom-modal-body {
+            padding: 24px 20px;
+        }
+
+        .amount-label {
+            font-size: 14px;
+            color: rgba(22, 24, 35, 0.7);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        .amount-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e1e1e2;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+        }
+
+        .coin-icon-small {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .amount-input {
+            font-size: 24px;
+            font-weight: 700;
+            color: #161823;
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .amount-input::placeholder {
+            color: #ccc;
+            font-weight: 400;
+        }
+
+        .amount-range {
+            display: flex;
+            font-size: 12px;
+            color: rgba(22, 24, 35, 0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .keypad-button {
+            background: #f1f1f2;
+            border: none;
+            border-radius: 8px;
+            height: 48px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #161823;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .keypad-button:hover {
+            background: #e1e1e2;
+        }
+
+        .keypad-button:active {
+            transform: scale(0.95);
+        }
+
+        .keypad-button.delete {
+            background: #f1f1f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .keypad-button.zero-triple {
+            grid-column: span 1;
+        }
+
+        .special-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .special-link {
+            color: #fe2c55;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .add-to-favorites {
+            color: #fe2c55;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .total-amount {
+            color: #161823;
+            font-weight: 700;
+        }
+
+        .purchase-button {
+            width: 100%;
+            background: #fe2c55;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .purchase-button:hover {
+            background: #e91e63;
+        }
+
+        .purchase-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .success-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: #00d26a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .success-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #161823;
+            margin-bottom: 8px;
+        }
+
+        .success-message {
+            font-size: 14px;
+            color: rgba(22, 24, 35, 0.75);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 12px;
+            }
+            
+            .search-container {
+                margin: 0 16px;
+                max-width: none;
+            }
+            
+            .header-actions {
+                gap: 12px;
+            }
+            
+            .login-button {
+                padding: 6px 20px;
+                font-size: 14px;
+            }
+            
+            .coin-packages {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+                padding: 0 8px;
+            }
+            
+            .coin-package {
+                padding: 24px 16px;
+            }
+            
+            .coin-amount {
+                font-size: 24px;
+            }
+            
+            .large-package .coin-amount {
+                font-size: 28px;
+            }
+            
+            .help-button {
+                width: 48px;
+                height: 48px;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .custom-modal-content {
+                width: 95%;
+                max-width: 350px;
+            }
+
+            .success-modal-content {
+                max-width: 280px;
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                height: 56px;
+            }
+            
+            .logo-text {
+                display: none;
+            }
+            
+            .search-input {
+                height: 40px;
+                font-size: 14px;
+            }
+            
+            .coin-packages {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr); /* ép đúng 3 cột */
+                gap: 8px; /* khoảng cách nhỏ lại cho vừa màn hình */
+            }
+            
+            .coin-package {
+                padding: 20px 12px;
+            }
+
+            .coin-icon svg {
+                font-size: 16px;
+            }
+            
+            .coin-amount {
+                font-size: 16px;
+            }
+
+            .coin-price, .coin-subtitle {
+                font-size: 10px;
+            }
+            
+            .large-package .coin-amount {
+                font-size: 24px;
+            }
+            
+            .main-content {
+                padding: 20px 0;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .coin-package.loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Success State */
+        .coin-package.success {
+            border-color: #52c41a;
+            background-color: #f6ffed;
+        }
+
+        .coin-package.success::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            color: #52c41a;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Float Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        /* Success Animation */
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon svg {
+            animation: checkmark 0.6s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 25 42" height="42" width="25" alt="TikTok" class="css-1keber0-5e6d46e3--StyledSingleLogoLight e1487oh23"><g clip-path="url(#a)"><path fill="#25F4EE" d="M9.875 16.842v-1.119A9 9 0 0 0 8.7 15.64c-4.797-.006-8.7 3.9-8.7 8.708a8.7 8.7 0 0 0 3.718 7.134A8.68 8.68 0 0 1 1.38 25.55c0-4.737 3.794-8.598 8.495-8.707"></path><path fill="#25F4EE" d="M10.087 29.526c2.14 0 3.89-1.707 3.966-3.83l.007-18.968h3.462a7 7 0 0 1-.109-1.202h-4.727l-.006 18.969a3.98 3.98 0 0 1-3.967 3.829 3.9 3.9 0 0 1-1.846-.46 3.95 3.95 0 0 0 3.22 1.662m13.905-16.36v-1.055a6.5 6.5 0 0 1-3.584-1.068 6.57 6.57 0 0 0 3.584 2.123"></path><path fill="#FE2C55" d="M20.408 11.043a6.54 6.54 0 0 1-1.616-4.315h-1.265a6.56 6.56 0 0 0 2.881 4.315M8.707 20.365a3.98 3.98 0 0 0-3.974 3.976c0 1.528.87 2.858 2.134 3.523a3.94 3.94 0 0 1-.754-2.32 3.98 3.98 0 0 1 3.973-3.977c.41 0 .805.07 1.176.185V16.92a9 9 0 0 0-1.176-.083c-.07 0-.134.006-.204.006v3.708a4 4 0 0 0-1.175-.185"></path><path fill="#FE2C55" d="M23.992 13.166v3.676a11.25 11.25 0 0 1-6.579-2.116v9.622c0 4.8-3.903 8.713-8.706 8.713a8.67 8.67 0 0 1-4.99-1.579 8.7 8.7 0 0 0 6.37 2.781c4.797 0 8.706-3.906 8.706-8.714v-9.621a11.25 11.25 0 0 0 6.579 2.116v-4.73a6.5 6.5 0 0 1-1.38-.148"></path><path fill="#000" d="M17.413 24.347v-9.621a11.25 11.25 0 0 0 6.58 2.116v-3.676a6.57 6.57 0 0 1-3.584-2.123 6.6 6.6 0 0 1-2.887-4.315h-3.463l-.006 18.968a3.98 3.98 0 0 1-3.967 3.83 3.99 3.99 0 0 1-3.225-1.656 3.99 3.99 0 0 1-2.134-3.523A3.98 3.98 0 0 1 8.7 20.371c.409 0 .805.07 1.176.185v-3.708c-4.702.103-8.496 3.964-8.496 8.701 0 2.289.888 4.373 2.338 5.933a8.67 8.67 0 0 0 4.989 1.58c4.797 0 8.706-3.913 8.706-8.715"></path></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h25v42H0z"></path></clipPath></defs></svg>
+                <span class="logo-text">TikTok</span>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Nhập TikTok ID">
+                <button class="search-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="coin-packages">
+                    <!-- Coin Package 1 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="coin-package" data-coins="30" data-price="9800" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <div style="height: 32px; display: flex; align-items: center;">
+                                <div class="coin-icon">
+                                    <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                                </div>
+                                <div class="coin-amount">30</div>
+                            </div>
+                            <div class="coin-price">US$0.31</div>
+                        </div>
+    
+                    </div>
+    
+                    <!-- Coin Package 2 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="coin-package" data-coins="350" data-price="113900" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <div style="height: 32px; display: flex; align-items: center;">
+                                <div class="coin-icon">
+                                    <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                                </div>
+                                <div class="coin-amount">350</div>
+                            </div>
+                            <div class="coin-price">US$3.59</div>
+                        </div>
+                        
+                    </div>
+    
+                    <!-- Coin Package 3 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="coin-package" data-coins="700" data-price="227700" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <div style="height: 32px; display: flex; align-items: center;">
+                                <div class="coin-icon">
+                                    <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                                </div>
+                                <div class="coin-amount">700</div>
+                            </div>
+                            <div class="coin-price">US$7.19</div>
+                        </div>
+                    </div>
+    
+                    <!-- Coin Package 4 -->
+                    <div class="coin-package" data-coins="1400" data-price="455300" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="height: 32px; display: flex; align-items: center;">
+                            <div class="coin-icon">
+                                <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                            </div>
+                            <div class="coin-amount">1,400</div>
+                        </div>
+                        <div class="coin-price">US$14.39</div>
+                    </div>
+    
+                    <!-- Coin Package 5 -->
+                    <div class="coin-package" data-coins="3500" data-price="1138100" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="height: 32px; display: flex; align-items: center;">
+                            <div class="coin-icon">
+                                <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                            </div>
+                            <div class="coin-amount">3,500</div>
+                        </div>
+                        <div class="coin-price">US$35.9</div>
+                    </div>
+    
+                    <!-- Coin Package 6 -->
+                    <div class="coin-package" data-coins="7000" data-price="2276200" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="height: 32px; display: flex; align-items: center;">
+                            <div class="coin-icon">
+                                <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                            </div>
+                            <div class="coin-amount">7,000</div>
+                        </div>
+                        <div class="coin-price">US$71.8</div>
+                    </div>
+    
+                    <!-- Large Package -->
+                    <div class="coin-package" data-coins="17500" data-price="5690400" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="height: 32px; display: flex; align-items: center;">
+                            <div class="coin-icon">
+                                <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                            </div>
+                            <div class="coin-amount">17,500</div>
+                        </div>
+                        <div class="coin-price">US$179.49</div>
+                    </div>
+    
+                    <!-- Custom Package -->
+                    <div class="coin-package custom-package" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="height: 32px; display: flex; align-items: center;">
+                            <div class="coin-icon">
+                                <svg class="block" color="inherit" font-size="30px" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                            </div>
+                            <div class="coin-amount">Tùy chỉnh</div>
+                        </div>
+                        <div class="coin-subtitle">Hỗ trợ số lượng lớn</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Amount Modal -->
+    <div class="custom-modal" id="customModal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <button class="custom-modal-back" onclick="closeCustomModal()">‹</button>
+                <div class="custom-modal-title">Tùy chỉnh</div>
+                <button class="custom-modal-help">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="custom-modal-body">
+                <div class="amount-label">
+                    Số lượng Xu 
+                    <svg fill="currentColor" font-size="12px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="m24 28.75 13.67-13.67a1 1 0 0 1 1.41 0l1.84 1.84a1 1 0 0 1 0 1.41L24.71 34.54a1 1 0 0 1-1.42 0L7.1 18.34a1 1 0 0 1 0-1.42l1.83-1.84a1 1 0 0 1 1.41 0L24 28.75Z"></path></svg>
+                </div>
+                <div class="amount-display">
+                    <svg class="coin-icon-small" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#Icon_Color-Tiktok_Coin_svg__a)"><path d="M48 24a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" fill="#FFB84D"></path><path d="M47 24a23 23 0 1 1-46 0 23 23 0 0 1 46 0Z" fill="#FFDE55"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A300"></path><path d="M42 24a18 18 0 1 1-36 0 18 18 0 0 1 36 0Z" fill="#F7A80F"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#E88B00"></path><path d="M41.94 25.5a18 18 0 1 0-35.88 0 18 18 0 0 1 35.88 0Z" fill="#F09207"></path><path d="M34.74 17.77v5.86c-2.06 0-4.05-.44-5.81-1.55v7.2a7.79 7.79 0 0 1-7.84 7.75 7.79 7.79 0 0 1-7.8-8.35 7.79 7.79 0 0 1 9.19-8.24v6c-.47-.13-.9-.26-1.39-.26a3.14 3.14 0 0 0-3.09 2.5 3.14 3.14 0 0 0 3.1 2.5c1.74 0 3.14-1.4 3.14-3.11V12.03h4.69a5.6 5.6 0 0 0 5.81 5.74Z" fill="#F09207"></path><path d="M34.34 18.18a5.78 5.78 0 0 1-5.82-5.74h-3.87v15.63c0 1.94-1.6 3.5-3.56 3.5a3.53 3.53 0 0 1-3.55-3.5 3.53 3.53 0 0 1 4.52-3.38v-3.9a7.38 7.38 0 0 0-8.4 7.28 7.38 7.38 0 0 0 7.43 7.34c4.1 0 7.43-3.29 7.43-7.34v-7.98a9.73 9.73 0 0 0 5.82 1.92v-3.83Z" fill="#fff"></path></g><defs><clipPath id="Icon_Color-Tiktok_Coin_svg__a"><path fill="#fff" d="M0 0h48v48H0z"></path></clipPath></defs></svg>
+                    <input type="text" class="amount-input" id="amountInput" placeholder="30 - 2,500,000">
+                </div>
+                <div class="amount-range" id="amountRange">US$0.40 - US$32,500</div>
+                
+                <div class="keypad">
+                    <button class="keypad-button" onclick="addDigit('1')">1</button>
+                    <button class="keypad-button" onclick="addDigit('2')">2</button>
+                    <button class="keypad-button" onclick="addDigit('3')">3</button>
+                    <button class="keypad-button delete" onclick="deleteDigit()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M22 3H7C6.31 3 5.77 3.35 5.41 3.88L0 12L5.41 20.11C5.77 20.64 6.31 21 7 21H22C23.1 21 24 20.1 24 19V5C24 3.9 23.1 3 22 3ZM19 15.59L17.59 17L14 13.41L10.41 17L9 15.59L12.59 12L9 8.41L10.41 7L14 10.59L17.59 7L19 8.41L15.41 12L19 15.59Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button class="keypad-button" onclick="addDigit('4')">4</button>
+                    <button class="keypad-button" onclick="addDigit('5')">5</button>
+                    <button class="keypad-button" onclick="addDigit('6')">6</button>
+                    <button class="keypad-button zero-triple" onclick="addTripleZero()">000</button>
+                    <button class="keypad-button" onclick="addDigit('7')">7</button>
+                    <button class="keypad-button" onclick="addDigit('8')">8</button>
+                    <button class="keypad-button" onclick="addDigit('9')">9</button>
+                    <button class="keypad-button" onclick="addDigit('0')">0</button>
+                </div>
+                
+                <div class="total-section">
+                    <span>Tổng</span>
+                    <span class="total-amount" id="totalAmount">US$0</span>
+                </div>
+                
+                <button class="purchase-button" onclick="purchaseCustomAmount()">
+                    <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em"><path d="M28.22 13.7a4.83 4.83 0 0 0 4.86 4.8l-.04 3.45c-1.77 0-3.4-.52-4.75-1.43l-.09 6.99a6.64 6.64 0 0 1-6.69 6.3 6.44 6.44 0 0 1-6.53-6.45 6.63 6.63 0 0 1 7.61-6.4l-.04 3.7a2.97 2.97 0 0 0-3.88 2.7 2.85 2.85 0 0 0 2.89 2.85 2.93 2.93 0 0 0 2.96-2.85l.16-13.66h3.54Z"></path><path d="M5 23.15V10.5c0-1.2 1.06-2.17 2.26-2.27 3.05-.26 8.87-1.53 15.34-7 .8-.67 2-.67 2.8 0 6.46 5.47 12.28 6.74 15.34 7 1.2.1 2.26 1.07 2.26 2.27v12.65c0 14.14-14.77 21.8-18.27 23.43-.47.22-1 .22-1.47 0C19.76 44.96 5 37.28 5 23.15Zm4-11.1v11.1c0 5.57 2.88 10.04 6.56 13.5 3.1 2.91 6.5 4.86 8.44 5.85a37.07 37.07 0 0 0 8.43-5.85C36.11 33.2 39 28.72 39 23.15v-11.1c-3.65-.54-9.1-2.17-15-6.8-5.91 4.63-11.35 6.26-15 6.8Z"></path></svg>
+                    Nạp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-modal-content">
+            <div class="success-icon">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="success-title">Đã hoàn tất mua</div>
+            <div class="success-message" id="successMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        var currentAmount = 0;
+        var usdRate = 0.0103; // USD per coin (approximately $0.0103 per coin)
+        var minAmount = 0;
+        var maxAmount = 2500000;
+
+        // Main JavaScript file for TikTok Coin Purchase Interface
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('TikTok Coin Interface loaded!');
+            
+            // Initialize the interface
+            initializeCoinPackages();
+            initializeSearch();
+            initializeAmountInput();
+            updateAmountDisplay();
+        });
+
+        // Initialize amount input with event handlers
+        function initializeAmountInput() {
+            var amountInput = document.getElementById('amountInput');
+            
+            // Add input event listener for real-time calculation
+            amountInput.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                if (value === '') {
+                    currentAmount = 0;
+                } else {
+                    var numValue = parseInt(value);
+                    if (!isNaN(numValue) && numValue <= maxAmount) {
+                        currentAmount = numValue;
+                    }
+                }
+                updateAmountDisplay();
+            });
+
+            // Add keypress event to prevent non-numeric input
+            amountInput.addEventListener('keypress', function(e) {
+                // Allow only numbers, backspace, delete, arrow keys
+                if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            // Add paste event handler
+            amountInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var paste = (e.clipboardData || window.clipboardData).getData('text');
+                var numValue = parseInt(paste.replace(/[^0-9]/g, ''));
+                if (!isNaN(numValue) && numValue <= maxAmount) {
+                    currentAmount = numValue;
+                    updateAmountDisplay();
+                }
+            });
+        }
+
+        // Coin package functionality
+        function initializeCoinPackages() {
+            var coinPackages = document.querySelectorAll('.coin-package');
+            var selectedPackage = null;
+            
+            for (var i = 0; i < coinPackages.length; i++) {
+                var packageElement = coinPackages[i];
+                
+                packageElement.addEventListener('click', function() {
+                    // Remove previous selection
+                    if (selectedPackage) {
+                        selectedPackage.classList.remove('selected');
+                    }
+                    
+                    // Handle custom package differently
+                    if (this.classList.contains('custom-package')) {
+                        showCustomModal();
+                        return;
+                    }
+                    
+                    // Select current package
+                    this.classList.add('selected');
+                    selectedPackage = this;
+                    
+                    // Get package data
+                    var coins = this.dataset.coins;
+                    var price = this.dataset.price;
+                    
+                    // Show selection feedback
+                    showSelectionFeedback(coins, price);
+                    
+                    // Simulate purchase process
+                    var currentPackage = this;
+                    setTimeout(function() {
+                        simulatePurchase(currentPackage);
+                    }, 1000);
+                });
+                
+                // Add hover effects
+                packageElement.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'translateY(-4px)';
+                    }
+                });
+                
+                packageElement.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+        }
+
+        // Show custom modal
+        function showCustomModal() {
+            var modal = document.getElementById('customModal');
+            modal.style.display = 'flex';
+            setTimeout(function() {
+                modal.style.opacity = '1';
+                modal.querySelector('.custom-modal-content').style.transform = 'scale(1)';
+            }, 10);
+            
+            // Reset amount to minimum
+            currentAmount = minAmount;
+            updateAmountDisplay();
+        }
+
+        // Close custom modal
+        function closeCustomModal() {
+            var modal = document.getElementById('customModal');
+            modal.style.opacity = '0';
+            modal.querySelector('.custom-modal-content').style.transform = 'scale(0.9)';
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Show success modal
+        function showSuccessModal(coinAmount) {
+            var modal = document.getElementById('successModal');
+            var messageElement = document.getElementById('successMessage');
+            
+            messageElement.textContent = 'Bạn đã nạp ' + coinAmount + ' Xu.';
+            
+            modal.style.display = 'flex';
+            setTimeout(function() {
+                modal.style.opacity = '1';
+                modal.querySelector('.success-modal-content').style.transform = 'scale(1)';
+            }, 10);
+            
+            // Auto close after 3 seconds
+            setTimeout(function() {
+                closeSuccessModal();
+            }, 3000);
+        }
+
+        // Close success modal
+        function closeSuccessModal() {
+            var modal = document.getElementById('successModal');
+            modal.style.opacity = '0';
+            modal.querySelector('.success-modal-content').style.transform = 'scale(0.9)';
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Add digit to amount
+        function addDigit(digit) {
+            var digitValue = parseInt(digit);
+            var newAmount;
+            
+            if (currentAmount === 0) {
+                newAmount = digitValue;
+            } else {
+                newAmount = currentAmount * 10 + digitValue;
+            }
+            
+            // Check limits
+            if (newAmount <= maxAmount) {
+                currentAmount = newAmount;
+                updateAmountDisplay();
+            }
+        }
+
+        // Add triple zero
+        function addTripleZero() {
+            var newAmount = currentAmount * 1000;
+            if (newAmount <= maxAmount) {
+                currentAmount = newAmount;
+                updateAmountDisplay();
+            }
+        }
+
+        // Delete last digit
+        function deleteDigit() {
+            if (currentAmount > 0) {
+                currentAmount = Math.floor(currentAmount / 10);
+                updateAmountDisplay();
+            }
+        }
+
+        // Update amount display
+        function updateAmountDisplay() {
+            var amountInput = document.getElementById('amountInput');
+            var amountRange = document.getElementById('amountRange');
+            var totalElement = document.getElementById('totalAmount');
+            var purchaseButton = document.querySelector('.purchase-button');
+            
+            // Update input display
+            if (currentAmount === 0) {
+                amountInput.value = '';
+                amountInput.placeholder = '30 - 2,500,000';
+            } else {
+                amountInput.value = currentAmount.toLocaleString();
+            }
+            
+            // Calculate total price in USD
+            var totalPrice = currentAmount * usdRate;
+            amountRange.textContent = 'US$' + totalPrice.toFixed(2);
+            totalElement.textContent = 'US$' + totalPrice.toFixed(2);
+            
+            // Enable/disable purchase button
+            if (currentAmount >= minAmount && currentAmount <= maxAmount) {
+                purchaseButton.disabled = false;
+                purchaseButton.style.background = '#fe2c55';
+            } else {
+                purchaseButton.disabled = true;
+                purchaseButton.style.background = '#ccc';
+            }
+        }
+
+        // Purchase custom amount
+        function purchaseCustomAmount() {
+            if (currentAmount >= minAmount && currentAmount <= maxAmount) {
+                closeCustomModal();
+                setTimeout(function() {
+                    showSuccessModal(currentAmount.toLocaleString());
+                    currentAmount = 0; // Reset
+                }, 300);
+                updateAmountDisplay();
+            } else {
+                alert('Vui lòng nhập số lượng coin từ ' + minAmount.toLocaleString() + ' đến ' + maxAmount.toLocaleString());
+            }
+        }
+
+        // Show selection feedback
+        function showSelectionFeedback(coins, price) {
+            // Create or update feedback message
+            var feedback = document.querySelector('.selection-feedback');
+            if (!feedback) {
+                feedback = document.createElement('div');
+                feedback.className = 'selection-feedback';
+                feedback.style.cssText = 'position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #fe2c55; color: white; padding: 12px 24px; border-radius: 24px; z-index: 1000; font-weight: 600; box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3); animation: slideDown 0.3s ease;';
+                document.body.appendChild(feedback);
+            }
+            
+            feedback.textContent = 'Đã chọn: ' + coins + ' coin - ₫' + parseInt(price).toLocaleString();
+            
+            // Auto hide after 3 seconds
+            setTimeout(function() {
+                if (feedback.parentNode) {
+                    feedback.remove();
+                }
+            }, 3000);
+        }
+
+        // Simulate purchase process
+        function simulatePurchase(packageElement) {
+            // Add loading state
+            packageElement.classList.add('loading');
+            
+            // Simulate API call delay
+            setTimeout(function() {
+                packageElement.classList.remove('loading');
+                packageElement.classList.add('success');
+                
+                // Show success modal instead of alert
+                var coins = packageElement.dataset.coins;
+                showSuccessModal(coins);
+                
+                // Reset after showing success
+                setTimeout(function() {
+                    packageElement.classList.remove('success', 'selected');
+                }, 2000);
+            }, 2000);
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            var searchInput = document.querySelector('.search-input');
+            var searchButton = document.querySelector('.search-button');
+            
+            // Handle search input
+            searchInput.addEventListener('input', function(e) {
+                var query = e.target.value.toLowerCase();
+                filterPackages(query);
+            });
+            
+            // Handle search button click
+            searchButton.addEventListener('click', function() {
+                var query = searchInput.value.toLowerCase();
+                if (query.trim()) {
+                    filterPackages(query);
+                } else {
+                    searchInput.focus();
+                }
+            });
+            
+            // Handle Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    var query = e.target.value.toLowerCase();
+                    filterPackages(query);
+                }
+            });
+        }
+
+        // Filter coin packages based on search
+        function filterPackages(query) {
+            var packages = document.querySelectorAll('.coin-package');
+            
+            for (var i = 0; i < packages.length; i++) {
+                var packageElement = packages[i];
+                var coins = packageElement.dataset.coins || '';
+                var priceElement = packageElement.querySelector('.coin-price');
+                var amountElement = packageElement.querySelector('.coin-amount');
+                var priceText = priceElement ? priceElement.textContent : '';
+                var amountText = amountElement ? amountElement.textContent : '';
+                
+                var matchesSearch = 
+                    coins.includes(query) ||
+                    priceText.toLowerCase().includes(query) ||
+                    amountText.toLowerCase().includes(query) ||
+                    (query.includes('tùy chỉnh') && packageElement.classList.contains('custom-package')) ||
+                    (query.includes('custom') && packageElement.classList.contains('custom-package'));
+                
+                if (matchesSearch || query.trim() === '') {
+                    packageElement.style.display = 'block';
+                    packageElement.style.opacity = '1';
+                } else {
+                    packageElement.style.opacity = '0.3';
+                }
+            }
+        }
+
+        // Close success modal when clicked outside
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessModal();
+            }
+        });
+
+        // Close custom modal when clicked outside
+        document.getElementById('customModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCustomModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
