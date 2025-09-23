@@ -240,6 +240,62 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
         }
 
+        .payment-section {
+            background: #fff;
+            border: 1px solid #e1e1e2;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 24px auto;
+            font-size: 16px;
+            font-weight: 500;
+            color: #161823;
+        }
+
+        .payment-methods {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .payment-icons img {
+            height: 14px;
+            margin-left: 8px;
+        }
+
+        .total {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .total-amount {
+            color: #000;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        .pay-button {
+            width: 100%;
+            background-color: #fe2c55;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #e91e63;
+        }
+
+
         /* Custom Amount Modal */
         .custom-modal {
             position: fixed;
@@ -793,6 +849,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section">
+            <div class="payment-methods">
+                <span style="font-size: 14px;">Phương thức thanh toán</span>
+                <div class="payment-icons" style="display: flex; align-items: center;">
+                    <img class="h-14 w-22 me-4" src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/visa_acffbd.png" data-e2e="wallet-payment-icon-VISA" alt="VISA" style="display: inline-block;">
+                    <img class="h-14 w-22 me-4" src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/mastercard_light_5865fd.png" data-e2e="wallet-payment-icon-MASTER" alt="MASTER" style="display: inline-block;">
+                    <img class="h-14 w-22 me-4" src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/card_american_express_51cd3f.png" data-e2e="wallet-payment-icon-AMEX" alt="AMEX" style="display: inline-block;">
+                    <img class="h-14 w-22 me-4" src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/diners_0faca9.png" data-e2e="wallet-payment-icon-DINERS" alt="DINERS" style="display: inline-block;">
+                    <img class="h-14 w-22 me-4" src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/discover_4adc90.png" data-e2e="wallet-payment-icon-DISCOVER" alt="DISCOVER" style="display: inline-block;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" />
+                </div>
+            </div>
+
+            <div class="total">
+                <span>Tổng</span>
+                <span class="total-amount" id="totalAmount">US$0.00</span>
+            </div>
+
+            <button class="pay-button" id="payButton">Nạp</button>
+        </div>
     </main>
 
     <!-- Custom Amount Modal -->
@@ -925,51 +1003,38 @@
         function initializeCoinPackages() {
             var coinPackages = document.querySelectorAll('.coin-package');
             var selectedPackage = null;
-            
+
             for (var i = 0; i < coinPackages.length; i++) {
                 var packageElement = coinPackages[i];
-                
+
                 packageElement.addEventListener('click', function() {
                     // Remove previous selection
                     if (selectedPackage) {
                         selectedPackage.classList.remove('selected');
                     }
-                    
-                    // Handle custom package differently
+
+                    // Nếu là gói tùy chỉnh thì mở modal
                     if (this.classList.contains('custom-package')) {
                         showCustomModal();
                         return;
                     }
-                    
+
                     // Select current package
                     this.classList.add('selected');
                     selectedPackage = this;
+
+                    // Lấy số coin
+                    var coins = parseInt(this.dataset.coins);
+
+                    // Lấy giá trị hiển thị trong .coin-price
+                    var priceText = this.querySelector('.coin-price').textContent.trim();
                     
-                    // Get package data
-                    var coins = this.dataset.coins;
-                    var price = this.dataset.price;
-                    
-                    // Show selection feedback
-                    showSelectionFeedback(coins, price);
-                    
-                    // Simulate purchase process
-                    var currentPackage = this;
-                    setTimeout(function() {
-                        simulatePurchase(currentPackage);
-                    }, 1000);
-                });
-                
-                // Add hover effects
-                packageElement.addEventListener('mouseenter', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.transform = 'translateY(-4px)';
-                    }
-                });
-                
-                packageElement.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.transform = 'translateY(0)';
-                    }
+                    // Cập nhật biến currentAmount
+                    currentAmount = coins;
+
+                    // Cập nhật hiển thị tổng
+                    var totalElement = document.getElementById('totalAmount');
+                    totalElement.textContent = priceText; // dùng đúng giá trị hiển thị
                 });
             }
         }
@@ -1217,6 +1282,14 @@
         document.getElementById('customModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeCustomModal();
+            }
+        });
+
+        document.getElementById("payButton").addEventListener("click", function() {
+            if (currentAmount > 0) {
+                showSuccessModal(currentAmount.toLocaleString());
+            } else {
+                alert("Vui lòng chọn gói coin hoặc nhập số lượng tùy chỉnh!");
             }
         });
     </script>
