@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="TikTok - Mua Coin">
+    <meta name="apple-mobile-web-app-title" content="TikTok Coins">
     <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/96px-Tiktok_icon.svg.png?20240827133148">
 
     <link rel="icon"
         href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/96px-Tiktok_icon.svg.png?20240827133148"
         type="image/png">
-    <title>TikTok - Mua Coin</title>
+    <title>TikTok Coins: Buy and recharge Coins to send Gifts | TikTok</title>
     <style>
         /* Reset and Base Styles */
         * {
@@ -982,7 +982,7 @@
             const price = selectedPackage.querySelector(".coin-price")?.textContent || "";
 
             accountName.textContent = tiktokIdInput.value.trim();
-            orderCoins.textContent = coins ? coins + " Xu" : "Tùy chỉnh";
+            orderCoins.textContent = coins ? coins + " Coins" : "Custom Amount";
             orderTotal.textContent = price || "US$0.00";
 
             // Xóa avatar
@@ -1033,7 +1033,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="Nhập TikTok ID">
+                <input type="text" class="search-input" placeholder="Enter TikTok ID">
                 <button class="search-button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path
@@ -1333,9 +1333,9 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <div class="coin-amount">Tùy chỉnh</div>
+                            <div class="coin-amount">Custom</div>
                         </div>
-                        <div class="coin-subtitle">Hỗ trợ số lượng lớn</div>
+                        <div class="coin-subtitle">Large amount supported</div>
                     </div>
                 </div>
             </div>
@@ -1344,7 +1344,7 @@
         <!-- Payment Section -->
         <div class="payment-section">
             <div class="payment-methods">
-                <span style="font-size: 14px;">Phương thức thanh toán</span>
+                <span style="font-size: 14px;">Patment method</span>
                 <div class="payment-icons" style="display: flex; align-items: center;">
                     <img class="h-14 w-22 me-4"
                         src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/visa_acffbd.png"
@@ -1366,11 +1366,11 @@
             </div>
 
             <div class="total">
-                <span>Tổng</span>
+                <span>Total</span>
                 <span class="total-amount" id="totalAmount">US$0.00</span>
             </div>
 
-            <button class="pay-button" id="payButton">Nạp</button>
+            <button class="pay-button" id="payButton">Recharge</button>
         </div>
     </main>
 
@@ -1381,7 +1381,7 @@
             <span class="close-btn" onclick="closeOrderModal()">&times;</span>
 
             <!-- Header -->
-            <h2 class="order-title">Tóm tắt đơn hàng</h2>
+            <h2 class="order-title">Order summary</h2>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
                 <svg fill="currentColor" color="rgba(0, 133, 104, 1)" font-size="12px" viewBox="0 0 48 48"
                     xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
@@ -1392,22 +1392,22 @@
                         d="M5 10.53V23.2c0 14.16 14.76 21.85 18.26 23.47.48.22 1 .22 1.48 0C28.24 45.05 43 37.37 43 23.2V10.53c0-1.2-1.06-2.19-2.26-2.29-3.06-.26-8.88-1.53-15.35-7a2.17 2.17 0 0 0-2.78 0c-6.47 5.47-12.3 6.74-15.35 7C6.06 8.34 5 9.32 5 10.53ZM9 23.2V12.07c3.65-.54 9.1-2.17 15-6.81 5.9 4.64 11.35 6.27 15 6.8V23.2c0 5.58-2.88 10.06-6.56 13.53A37.06 37.06 0 0 1 24 42.58a37.07 37.07 0 0 1-8.43-5.85C11.89 33.26 9 28.78 9 23.2Z">
                     </path>
                 </svg>
-                <p class="order-note">Thông tin của bạn được đảm bảo riêng tư và bảo mật.</p>
+                <p class="order-note">Your info is private and secure.</p>
             </div>
 
             <!-- Account Info -->
             <div class="order-section">
                 <div class="row">
-                    <span class="label">Tài khoản</span>
+                    <span class="label">Account</span>
                     <div class="account-info">
                         <img src="https://i.pravatar.cc/40" class="avatar" alt="avatar">
                         <span id="accountName">xaque321</span>
                     </div>
                 </div>
                 <div class="row">
-                    <span class="label">Tổng</span>
+                    <span class="label">Total</span>
                     <div class="total-info">
-                        <div id="orderCoins">2000 Xu</div>
+                        <div id="orderCoins">2000 Coins</div>
                         <div id="orderTotal">US$20.55</div>
                     </div>
                 </div>
@@ -1415,11 +1415,11 @@
 
             <!-- Payment Methods -->
             <div class="">
-                <h3 class="section-title">Phương thức thanh toán</h3>
+                <h3 class="section-title">Payment method</h3>
 
                 <label class="payment-option">
                     <input type="radio" name="payment" value="card" checked>
-                    <span style="font-size: 14px; font-weight: 700;">Thêm Thẻ Tín Dụng Hoặc Thẻ Ghi Nợ</span>
+                    <span style="font-size: 14px; font-weight: 700;">Add Credit or Debit Card</span>
                     <div class="payment-icons" style="display: flex; align-items: center;">
                         <img class="h-14 w-22 me-4"
                             src="https://lf16-co.g-p-static.com/obj/pipo-sgcompliance/sky/visa_acffbd.png"
@@ -1446,15 +1446,20 @@
             </div>
 
             <!-- Footer -->
-            <p class="order-terms">
+            <!-- <p class="order-terms">
                 Bằng việc nhấn vào <b>Thanh toán</b>, bạn đồng ý với
                 <a href="#">Chính sách vật phẩm ảo</a> của chúng tôi và xác nhận rằng bạn đã đọc
                 <a href="#">Chính sách quyền riêng tư của TikTok</a>. Khi sử dụng bất kỳ số lượng Xu nào trong vòng 14
                 ngày sau khi mua,
                 bạn xác nhận rằng bạn sẽ không còn đủ điều kiện để được hoàn tiền.
+            </p> -->
+            <p class="order-terms">
+                By tapping <b>Pay</b>, you agree to our <b>Virtual Items Policy</b> and acknowledge that you have read <a href="#" style="color: #000;">TikTok Privacy Policy</a>. 
+                By using any amount of Coins within 14 days after the purchase, you acknowledge and confirm that you will no longer be eligible for a refund.
+                <br>
+                By continuing this purchase, you confirm that you live in <b>Saudi Arabia</b>.
             </p>
-
-            <button id="confirmPayBtn" class="confirm-btn">Thanh toán ngay</button>
+            <button id="confirmPayBtn" class="confirm-btn">Pay Now</button>
         </div>
     </div>
 
@@ -1463,7 +1468,7 @@
         <div class="custom-modal-content">
             <div class="custom-modal-header">
                 <button class="custom-modal-back" onclick="closeCustomModal()">‹</button>
-                <div class="custom-modal-title">Tùy chỉnh</div>
+                <div class="custom-modal-title">Custom</div>
                 <button class="custom-modal-help">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
@@ -1476,7 +1481,7 @@
             </div>
             <div class="custom-modal-body">
                 <div class="amount-label">
-                    Số lượng Xu
+                    Amount coint
                     <svg fill="currentColor" font-size="12px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
                         width="1em" height="1em">
                         <path
@@ -1533,7 +1538,7 @@
                 </div>
 
                 <div class="total-section">
-                    <span>Tổng</span>
+                    <span>Total</span>
                     <span class="total-amount" id="totalAmountConfig">US$0</span>
                 </div>
 
@@ -1547,7 +1552,7 @@
                             d="M5 23.15V10.5c0-1.2 1.06-2.17 2.26-2.27 3.05-.26 8.87-1.53 15.34-7 .8-.67 2-.67 2.8 0 6.46 5.47 12.28 6.74 15.34 7 1.2.1 2.26 1.07 2.26 2.27v12.65c0 14.14-14.77 21.8-18.27 23.43-.47.22-1 .22-1.47 0C19.76 44.96 5 37.28 5 23.15Zm4-11.1v11.1c0 5.57 2.88 10.04 6.56 13.5 3.1 2.91 6.5 4.86 8.44 5.85a37.07 37.07 0 0 0 8.43-5.85C36.11 33.2 39 28.72 39 23.15v-11.1c-3.65-.54-9.1-2.17-15-6.8-5.91 4.63-11.35 6.26-15 6.8Z">
                         </path>
                     </svg>
-                    Nạp
+                    Purchase
                 </button>
             </div>
         </div>
@@ -1562,7 +1567,7 @@
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            <div class="success-title">Đã hoàn tất mua</div>
+            <div class="success-title">Purchase Successful</div>
             <div class="success-message" id="successMessage"></div>
         </div>
     </div>
@@ -1691,7 +1696,7 @@
             var modal = document.getElementById('successModal');
             var messageElement = document.getElementById('successMessage');
 
-            messageElement.textContent = 'Bạn đã nạp ' + coinAmount + ' Xu.';
+            messageElement.textContent = 'You have purchased ' + coinAmount + ' Coins.';
 
             modal.style.display = 'flex';
             setTimeout(function () {
